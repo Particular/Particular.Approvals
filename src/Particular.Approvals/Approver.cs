@@ -12,6 +12,17 @@
     public static class Approver
     {
         static readonly string approvalFilesPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "ApprovalFiles");
+        static readonly JsonSerializerSettings jsonSerializerSettings;
+
+        static Approver()
+        {
+            jsonSerializerSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented
+            };
+
+            jsonSerializerSettings.Converters.Add(new StringEnumConverter());
+        }
 
         /// <summary>
         ///
@@ -58,14 +69,7 @@
         /// <param name="category"></param>
         public static void Verify(object data, Func<string, string> scrubber = null, string category = null)
         {
-            var settings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented
-            };
-
-            settings.Converters.Add(new StringEnumConverter());
-
-            var json = JsonConvert.SerializeObject(data, settings);
+            var json = JsonConvert.SerializeObject(data, jsonSerializerSettings);
 
             Verify(json, scrubber, category);
         }
