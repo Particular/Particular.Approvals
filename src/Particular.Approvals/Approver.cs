@@ -3,6 +3,8 @@
     using System.IO;
     using System.Runtime.CompilerServices;
     using NUnit.Framework;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
 
     /// <summary>
     ///
@@ -18,6 +20,31 @@
         /// <param name="callerClassName"></param>
         /// <param name="callerMethodName"></param>
         public static void Verify(string text, [CallerFilePath] string callerClassName = null, [CallerMemberName] string callerMethodName = null)
+        {
+            VerifyInternal(text, callerClassName, callerMethodName);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="callerClassName"></param>
+        /// <param name="callerMethodName"></param>
+        public static void Verify(object data, [CallerFilePath] string callerClassName = null, [CallerMemberName] string callerMethodName = null)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented
+            };
+
+            settings.Converters.Add(new StringEnumConverter());
+
+            var json = JsonConvert.SerializeObject(data, settings);
+
+            VerifyInternal(json, callerClassName, callerMethodName);
+        }
+
+        static void VerifyInternal(string text, string callerClassName, string callerMethodName)
         {
             callerClassName = Path.GetFileNameWithoutExtension(callerClassName);
 
