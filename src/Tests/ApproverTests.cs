@@ -15,7 +15,13 @@
         [Test]
         public void Can_Approve_Text_With_Category()
         {
-            Approver.Verify("Text to\r\napprove", "test");
+            Approver.Verify("Text to\r\napprove", category: "test");
+        }
+
+        [Test]
+        public void Can_Approve_Text_With_Scrubber()
+        {
+            Approver.Verify("Text to approve", s => s.Replace("approve", "replace"));
         }
 
         [Test]
@@ -31,7 +37,15 @@
         {
             var sample = new Sample { Value1 = "Value", Value2 = 42 };
 
-            Approver.Verify(sample, "test");
+            Approver.Verify(sample, category: "test");
+        }
+
+        [Test]
+        public void Can_Approve_Object_With_Scrubber()
+        {
+            var sample = new Sample { Value1 = "Value", Value2 = 42 };
+
+            Approver.Verify(sample, s => s.Replace("42", "100"));
         }
     }
 
