@@ -16,16 +16,18 @@
         ///
         /// </summary>
         /// <param name="text"></param>
-        public static void Verify(string text)
+        /// <param name="category"></param>
+        public static void Verify(string text, string category = null)
         {
             var parts = TestContext.CurrentContext.Test.ClassName.Split('.');
             var className = parts[parts.Length - 1];
             var methodName = TestContext.CurrentContext.Test.MethodName;
+            var categoryName = string.IsNullOrEmpty(category) ? "" : category + ".";
 
-            var receivedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.received.txt");
+            var receivedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{categoryName}received.txt");
             File.WriteAllText(receivedFile, text);
 
-            var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.approved.txt");
+            var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{categoryName}approved.txt");
             var approvedText = File.ReadAllText(approvedFile);
 
             var normalizedApprovedText = approvedText.Replace("\r\n", "\n");
@@ -40,7 +42,8 @@
         ///
         /// </summary>
         /// <param name="data"></param>
-        public static void Verify(object data)
+        /// <param name="category"></param>
+        public static void Verify(object data, string category = null)
         {
             var settings = new JsonSerializerSettings
             {
@@ -51,7 +54,7 @@
 
             var json = JsonConvert.SerializeObject(data, settings);
 
-            Verify(json);
+            Verify(json, category);
         }
     }
 }
