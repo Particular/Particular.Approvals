@@ -29,23 +29,23 @@
         /// </summary>
         /// <param name="text"></param>
         /// <param name="scrubber"></param>
-        /// <param name="category"></param>
-        public static void Verify(string text, Func<string, string> scrubber = null, string category = null)
+        /// <param name="scenario"></param>
+        public static void Verify(string text, Func<string, string> scrubber = null, string scenario = null)
         {
             var parts = TestContext.CurrentContext.Test.ClassName.Split('.');
             var className = parts[parts.Length - 1];
             var methodName = TestContext.CurrentContext.Test.MethodName;
-            var categoryName = string.IsNullOrEmpty(category) ? "" : category + ".";
+            var scenarioName = string.IsNullOrEmpty(scenario) ? "" : scenario + ".";
 
             if (scrubber != null)
             {
                 text = scrubber(text);
             }
 
-            var receivedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{categoryName}received.txt");
+            var receivedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}received.txt");
             File.WriteAllText(receivedFile, text);
 
-            var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{categoryName}approved.txt");
+            var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}approved.txt");
             var approvedText = File.ReadAllText(approvedFile);
 
             if (scrubber != null)
@@ -66,12 +66,12 @@
         /// </summary>
         /// <param name="data"></param>
         /// <param name="scrubber"></param>
-        /// <param name="category"></param>
-        public static void Verify(object data, Func<string, string> scrubber = null, string category = null)
+        /// <param name="scenario"></param>
+        public static void Verify(object data, Func<string, string> scrubber = null, string scenario = null)
         {
             var json = JsonConvert.SerializeObject(data, jsonSerializerSettings);
 
-            Verify(json, scrubber, category);
+            Verify(json, scrubber, scenario);
         }
     }
 }

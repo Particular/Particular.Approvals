@@ -13,9 +13,9 @@
         }
 
         [Test]
-        public void Can_Approve_Text_With_Category()
+        public void Can_Approve_Text_With_Scenario()
         {
-            Approver.Verify("Text to\r\napprove", category: "test");
+            Approver.Verify("Text to\r\napprove", scenario: "test");
         }
 
         [Test]
@@ -33,11 +33,11 @@
         }
 
         [Test]
-        public void Can_Approve_Object_With_Category()
+        public void Can_Approve_Object_With_Scenario()
         {
             var sample = new Sample { Value1 = "Value", Value2 = 42 };
 
-            Approver.Verify(sample, category: "test");
+            Approver.Verify(sample, scenario: "test");
         }
 
         [Test]
