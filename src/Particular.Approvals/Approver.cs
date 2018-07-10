@@ -7,7 +7,7 @@
     using NUnit.Framework;
 
     /// <summary>
-    ///
+    /// Verifies that values contain approved content.
     /// </summary>
     public static class Approver
     {
@@ -25,12 +25,12 @@
         }
 
         /// <summary>
-        ///
+        /// Verifies that the received string matches the contents of the corresponding approval file.
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="scrubber"></param>
-        /// <param name="scenario"></param>
-        public static void Verify(string text, Func<string, string> scrubber = null, string scenario = null)
+        /// <param name="value">The string to verify.</param>
+        /// <param name="scrubber">A delegate that modifies the received string before comparing it to the approval file.</param>
+        /// <param name="scenario">A value that will be added to the name of the approval file.</param>
+        public static void Verify(string value, Func<string, string> scrubber = null, string scenario = null)
         {
             var parts = TestContext.CurrentContext.Test.ClassName.Split('.');
             var className = parts[parts.Length - 1];
@@ -39,11 +39,11 @@
 
             if (scrubber != null)
             {
-                text = scrubber(text);
+                value = scrubber(value);
             }
 
             var receivedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}received.txt");
-            File.WriteAllText(receivedFile, text);
+            File.WriteAllText(receivedFile, value);
 
             var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}approved.txt");
             var approvedText = File.ReadAllText(approvedFile);
@@ -54,7 +54,7 @@
             }
 
             var normalizedApprovedText = approvedText.Replace("\r\n", "\n");
-            var normalizedReceivedText = text.Replace("\r\n", "\n");
+            var normalizedReceivedText = value.Replace("\r\n", "\n");
 
             Assert.AreEqual(normalizedApprovedText, normalizedReceivedText);
 
@@ -62,14 +62,14 @@
         }
 
         /// <summary>
-        ///
+        /// Verifies that the received object, after it has been serialized, matches the contents of the corresponding approval file.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="scrubber"></param>
-        /// <param name="scenario"></param>
-        public static void Verify(object data, Func<string, string> scrubber = null, string scenario = null)
+        /// <param name="value">The object to verify.</param>
+        /// <param name="scrubber">A delegate that modifies the received object, after it has been serialized, before comparing it to the approval file.</param>
+        /// <param name="scenario">A value that will be added to the name of the approval file.</param>
+        public static void Verify(object value, Func<string, string> scrubber = null, string scenario = null)
         {
-            var json = JsonConvert.SerializeObject(data, jsonSerializerSettings);
+            var json = JsonConvert.SerializeObject(value, jsonSerializerSettings);
 
             Verify(json, scrubber, scenario);
         }
