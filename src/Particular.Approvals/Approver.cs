@@ -51,7 +51,7 @@
             var normalizedApprovedText = approvedText.Replace("\r\n", "\n");
             var normalizedReceivedText = value.Replace("\r\n", "\n");
 
-            Assert.AreEqual(normalizedApprovedText, normalizedReceivedText);
+            Assert.AreEqual(normalizedApprovedText, normalizedReceivedText, "Approval verification failed.");
 
             File.Delete(receivedFile);
         }
