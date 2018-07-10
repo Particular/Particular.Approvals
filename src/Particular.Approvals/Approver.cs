@@ -48,11 +48,6 @@
             var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}approved.txt");
             var approvedText = File.ReadAllText(approvedFile);
 
-            if (scrubber != null)
-            {
-                approvedText = scrubber(approvedText);
-            }
-
             var normalizedApprovedText = approvedText.Replace("\r\n", "\n");
             var normalizedReceivedText = value.Replace("\r\n", "\n");
 
