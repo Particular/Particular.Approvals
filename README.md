@@ -1,8 +1,8 @@
 # Particular.Approvals
 
-This repo contains out standardized way of using approval tests to verify and highlight any changes to public API's.
+This repo contains our standardized way of using approval tests to verify and highlight any changes to public APIs.
 
-## Usage
+## Migration to Particular.Approvals
 
 1. Remove `ApprovalTests`, `ApprovalUtilities`, and `ObjectApproval` packages
 1. Add `Particular.Approvals` package
