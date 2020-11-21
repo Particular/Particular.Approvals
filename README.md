@@ -13,7 +13,7 @@ This repo contains our standardized way of using approval tests to verify and hi
 1. Move all approval files into an ApprovalFiles folder in the root of the test project
 1. Remove `ApprovalTestConfig.cs`, `TestApprover.cs`, etc (anything directly referencing ApprovalTests)
 
-After conversion, an API approval test should look identical to the following (other than adjusting the specific type, of course): https://github.com/Particular/NServiceBus.AzureStorageQueues/blob/develop/src/Tests/APIApprovals.cs
+After conversion, an API approval test should look identical to the following (other than adjusting the specific type, of course): https://github.com/Particular/NServiceBus.AzureStorageQueues/blob/master/src/Tests/APIApprovals.cs
 
 If a project isn't multi-targeted you could skip the `excludeAttributes`, but it wouldn't hurt to have it regardless.
 
