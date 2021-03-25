@@ -2,9 +2,8 @@ name: Build & Test
 
 on:
   push:
-    branches:
-      - master
-      - release-*
+    branches: [main, release-*]
+    tags: ["*.*.*"]
   pull_request:
 env:
   DOTNET_NOLOGO: true
