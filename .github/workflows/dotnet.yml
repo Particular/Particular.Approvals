@@ -36,3 +36,4 @@ jobs:
       with:
         name: nugets
         path: nugets/     
+        retention-days: 14
