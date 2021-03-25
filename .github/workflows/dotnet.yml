@@ -20,11 +20,11 @@ jobs:
       with:
           fetch-depth: 0
     - name: Setup .NET 5.x
-      uses: actions/setup-dotnet@vv1.7.2
+      uses: actions/setup-dotnet@v1.7.2
       with:
         dotnet-version: 5.0.x          
     - name: Setup .NET 3.1.x
-      uses: actions/setup-dotnet@vv1.7.2
+      uses: actions/setup-dotnet@v1.7.2
       with:
         dotnet-version: 3.1.x
     - name: Build
@@ -32,7 +32,7 @@ jobs:
     - name: Test
       run: dotnet test src/Particular.Approvals.sln --configuration Release --no-build --logger "GitHubActions;report-warnings=false"
     - name: Artifacts
-      uses: actions/upload-artifact@2.2.2
+      uses: actions/upload-artifact@v2.2.2
       with:
         name: nugets
         path: nugets/     
