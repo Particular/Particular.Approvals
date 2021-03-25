@@ -17,9 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build src/Particular.Approvals.sln --configuration Release
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test src/Particular.Approvals.sln --configuration Release --no-build --logger "GitHubActions;report-warnings=false"
