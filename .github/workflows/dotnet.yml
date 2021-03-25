@@ -8,14 +8,16 @@ on:
   pull_request:
 env:
   DOTNET_NOLOGO: true
-  
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 jobs:
   build:
 
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
           fetch-depth: 0
     - name: Setup .NET 5.x
@@ -30,3 +32,9 @@ jobs:
       run: dotnet build src/Particular.Approvals.sln --configuration Release
     - name: Test
       run: dotnet test src/Particular.Approvals.sln --configuration Release --no-build --logger "GitHubActions;report-warnings=false"
+    - name: Artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: nugets
+        path: nugets/
+        path: nugets/        
