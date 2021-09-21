@@ -32,7 +32,7 @@ jobs:
     - name: Test
       run: dotnet test src/Particular.Approvals.sln --configuration Release --no-build --logger "GitHubActions;report-warnings=false"
     - name: Artifacts
-      uses: actions/upload-artifact@v2.2.2
+      uses: actions/upload-artifact@v2.2.4
       with:
         name: nugets
         path: nugets/     
