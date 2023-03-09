@@ -2,8 +2,8 @@
 {
     using System;
     using System.IO;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
     using NUnit.Framework;
 
     /// <summary>
@@ -12,16 +12,16 @@
     public static class Approver
     {
         static readonly string approvalFilesPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "ApprovalFiles");
-        static readonly JsonSerializerSettings jsonSerializerSettings;
+        static readonly JsonSerializerOptions jsonSerializerOptions;
 
         static Approver()
         {
-            jsonSerializerSettings = new JsonSerializerSettings
+            jsonSerializerOptions = new JsonSerializerOptions
             {
-                Formatting = Formatting.Indented
+                WriteIndented = true
             };
 
-            jsonSerializerSettings.Converters.Add(new StringEnumConverter());
+            jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <summary>
@@ -64,7 +64,7 @@
         /// <param name="scenario">A value that will be added to the name of the approval file.</param>
         public static void Verify(object value, Func<string, string> scrubber = null, string scenario = null)
         {
-            var json = JsonConvert.SerializeObject(value, jsonSerializerSettings);
+            var json = JsonSerializer.Serialize(value, value.GetType(), jsonSerializerOptions);
 
             Verify(json, scrubber, scenario);
         }
