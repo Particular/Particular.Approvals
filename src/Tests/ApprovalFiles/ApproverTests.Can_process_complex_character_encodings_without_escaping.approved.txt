@@ -1,0 +1,4 @@
+{
+  "Value1": "Foo => Bar // <br />",
+  "Value2": 0
+}

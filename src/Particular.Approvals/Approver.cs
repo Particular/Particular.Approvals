@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Text.Encodings.Web;
     using System.Text.Json;
     using System.Text.Json.Serialization;
     using NUnit.Framework;
@@ -18,6 +19,7 @@
         {
             jsonSerializerOptions = new JsonSerializerOptions
             {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true
             };
 

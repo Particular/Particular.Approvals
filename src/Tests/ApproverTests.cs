@@ -47,6 +47,14 @@
 
             Approver.Verify(sample, s => s.Replace("42", "100"));
         }
+
+        [Test]
+        public void Can_process_complex_character_encodings_without_escaping()
+        {
+            var sample = new Sample { Value1 = "Foo => Bar // <br />" };
+
+            Approver.Verify(sample);
+        }
     }
 
     class Sample
