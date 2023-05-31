@@ -1,5 +1,7 @@
 ﻿namespace Tests
 {
+    using System;
+    using System.IO;
     using NUnit.Framework;
     using Particular.Approvals;
 
@@ -54,6 +56,31 @@
             var sample = new Sample { Value1 = "Foo => Bar // <br />" };
 
             Approver.Verify(sample);
+        }
+
+        [Test]
+        public void Can_handle_missing_approval_file_for_new_test()
+        {
+            var sample = "Foo";
+
+            var name = $"{nameof(ApproverTests)}.{nameof(Can_handle_missing_approval_file_for_new_test)}";
+
+            var approved = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "ApprovalFiles", $"{name}.approved.txt");
+            var received = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "ApprovalFiles", $"{name}.received.txt");
+
+            // Delete approval file if it exists from previous test run
+            if (File.Exists(approved))
+            {
+                File.Delete(approved);
+            }
+
+            var exception = Assert.Throws<AssertionException>(() => Approver.Verify(sample));
+            Assert.That(exception.Message, Contains.Substring("Approval verification failed"));
+
+            Assert.That(File.Exists(approved));
+            Assert.That(File.ReadAllText(approved), Is.Empty);
+
+            File.Delete(approved);
         }
     }
 

@@ -48,6 +48,10 @@
             File.WriteAllText(receivedFile, value);
 
             var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}approved.txt");
+            if (!File.Exists(approvedFile))
+            {
+                File.WriteAllText(approvedFile, string.Empty);
+            }
             var approvedText = File.ReadAllText(approvedFile);
 
             var normalizedApprovedText = approvedText.Replace("\r\n", "\n");
