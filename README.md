@@ -2,6 +2,10 @@
 
 This repo contains our standardized way of using approval tests to verify and highlight any changes to public APIs.
 
+## Deployment
+
+Tagged versions are automatically pushed to [feedz.io](https://feedz.io/org/particular-software/repository/packages/packages/Particular.Analyzers). After validating new versions, the package should be promoted to production by pushing the package to NuGet using the feedz.io push upstream feature.
+
 ## Migration to Particular.Approvals
 
 1. Remove `ApprovalTests`, `ApprovalUtilities`, and `ObjectApproval` packages
