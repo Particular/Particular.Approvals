@@ -75,10 +75,14 @@
             }
 
             var exception = Assert.Throws<Exception>(() => Approver.Verify(sample));
-            Assert.That(exception.Message, Contains.Substring("Approval verification failed"));
 
-            Assert.That(File.Exists(approved));
-            Assert.That(File.ReadAllText(approved), Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(exception.Message, Contains.Substring("Approval verification failed"));
+
+                Assert.That(File.Exists(approved));
+                Assert.That(File.ReadAllText(approved), Is.Empty);
+            });
 
             File.Delete(approved);
         }
