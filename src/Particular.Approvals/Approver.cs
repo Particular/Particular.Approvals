@@ -33,8 +33,8 @@
         /// <param name="value">The string to verify.</param>
         /// <param name="scrubber">A delegate that modifies the received string before comparing it to the approval file.</param>
         /// <param name="scenario">A value that will be added to the name of the approval file.</param>
-        /// <param name="callerFilePath"></param>
-        /// <param name="callerMemberName"></param>
+        /// <param name="callerFilePath">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerFilePathAttribute"/>.</param>
+        /// <param name="callerMemberName">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerMemberNameAttribute"/>.</param>
         public static void Verify(string value, Func<string, string> scrubber = null, string scenario = null, [CallerFilePath] string callerFilePath = null, [CallerMemberName] string callerMemberName = null)
         {
             var fileName = Path.GetFileNameWithoutExtension(callerFilePath);
@@ -74,8 +74,8 @@
         /// <param name="value">The object to verify.</param>
         /// <param name="scrubber">A delegate that modifies the received object, after it has been serialized, before comparing it to the approval file.</param>
         /// <param name="scenario">A value that will be added to the name of the approval file.</param>
-        /// <param name="callerFilePath"></param>
-        /// <param name="callerMemberName"></param>
+        /// <param name="callerFilePath">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerFilePathAttribute"/>.</param>
+        /// <param name="callerMemberName">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerMemberNameAttribute"/>.</param>
         public static void Verify(object value, Func<string, string> scrubber = null, string scenario = null, [CallerFilePath] string callerFilePath = null, [CallerMemberName] string callerMemberName = null)
         {
             var json = JsonSerializer.Serialize(value, value.GetType(), jsonSerializerOptions);
