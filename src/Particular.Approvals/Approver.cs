@@ -2,17 +2,18 @@
 {
     using System;
     using System.IO;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Text.Encodings.Web;
     using System.Text.Json;
     using System.Text.Json.Serialization;
-    using NUnit.Framework;
 
     /// <summary>
     /// Verifies that values contain approved content.
     /// </summary>
     public static class Approver
     {
-        static readonly string approvalFilesPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "ApprovalFiles");
+        static readonly string approvalFilesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "ApprovalFiles");
         static readonly JsonSerializerOptions jsonSerializerOptions;
 
         static Approver()
@@ -32,11 +33,11 @@
         /// <param name="value">The string to verify.</param>
         /// <param name="scrubber">A delegate that modifies the received string before comparing it to the approval file.</param>
         /// <param name="scenario">A value that will be added to the name of the approval file.</param>
-        public static void Verify(string value, Func<string, string> scrubber = null, string scenario = null)
+        /// <param name="callerFilePath">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerFilePathAttribute"/>.</param>
+        /// <param name="callerMemberName">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerMemberNameAttribute"/>.</param>
+        public static void Verify(string value, Func<string, string> scrubber = null, string scenario = null, [CallerFilePath] string callerFilePath = null, [CallerMemberName] string callerMemberName = null)
         {
-            var parts = TestContext.CurrentContext.Test.ClassName.Split('.');
-            var className = parts[parts.Length - 1];
-            var methodName = TestContext.CurrentContext.Test.MethodName;
+            var fileName = Path.GetFileNameWithoutExtension(callerFilePath);
             var scenarioName = string.IsNullOrEmpty(scenario) ? "" : scenario + ".";
 
             if (scrubber != null)
@@ -44,20 +45,25 @@
                 value = scrubber(value);
             }
 
-            var receivedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}received.txt");
+            var receivedFile = Path.Combine(approvalFilesPath, $"{fileName}.{callerMemberName}.{scenarioName}received.txt");
             File.WriteAllText(receivedFile, value);
 
-            var approvedFile = Path.Combine(approvalFilesPath, $"{className}.{methodName}.{scenarioName}approved.txt");
+            var approvedFile = Path.Combine(approvalFilesPath, $"{fileName}.{callerMemberName}.{scenarioName}approved.txt");
+
             if (!File.Exists(approvedFile))
             {
                 File.WriteAllText(approvedFile, string.Empty);
             }
+
             var approvedText = File.ReadAllText(approvedFile);
 
             var normalizedApprovedText = approvedText.Replace("\r\n", "\n");
             var normalizedReceivedText = value.Replace("\r\n", "\n");
 
-            Assert.AreEqual(normalizedApprovedText, normalizedReceivedText, "Approval verification failed.");
+            if (!string.Equals(normalizedApprovedText, normalizedReceivedText))
+            {
+                throw new Exception("Approval verification failed.");
+            }
 
             File.Delete(receivedFile);
         }
@@ -68,11 +74,13 @@
         /// <param name="value">The object to verify.</param>
         /// <param name="scrubber">A delegate that modifies the received object, after it has been serialized, before comparing it to the approval file.</param>
         /// <param name="scenario">A value that will be added to the name of the approval file.</param>
-        public static void Verify(object value, Func<string, string> scrubber = null, string scenario = null)
+        /// <param name="callerFilePath">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerFilePathAttribute"/>.</param>
+        /// <param name="callerMemberName">Do not provide a value for this parameter. It is populated with the value from <see cref="CallerMemberNameAttribute"/>.</param>
+        public static void Verify(object value, Func<string, string> scrubber = null, string scenario = null, [CallerFilePath] string callerFilePath = null, [CallerMemberName] string callerMemberName = null)
         {
             var json = JsonSerializer.Serialize(value, value.GetType(), jsonSerializerOptions);
 
-            Verify(json, scrubber, scenario);
+            Verify(json, scrubber, scenario, callerFilePath, callerMemberName);
         }
     }
 }

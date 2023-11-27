@@ -1,5 +1,6 @@
 ﻿namespace Tests
 {
+    using System;
     using System.IO;
     using NUnit.Framework;
     using Particular.Approvals;
@@ -73,11 +74,15 @@
                 File.Delete(approved);
             }
 
-            var exception = Assert.Throws<AssertionException>(() => Approver.Verify(sample));
-            Assert.That(exception.Message, Contains.Substring("Approval verification failed"));
+            var exception = Assert.Throws<Exception>(() => Approver.Verify(sample));
 
-            Assert.That(File.Exists(approved));
-            Assert.That(File.ReadAllText(approved), Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(exception.Message, Contains.Substring("Approval verification failed"));
+
+                Assert.That(File.Exists(approved));
+                Assert.That(File.ReadAllText(approved), Is.Empty);
+            });
 
             File.Delete(approved);
         }
