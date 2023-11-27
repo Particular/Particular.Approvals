@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="[3.14.0, 4.0.0)" />
     <PackageReference Include="Particular.Packaging" Version="4.0.0" PrivateAssets="All" />
     <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
