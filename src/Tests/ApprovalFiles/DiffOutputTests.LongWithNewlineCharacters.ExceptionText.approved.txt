@@ -1,0 +1,7 @@
+Approval verification failed.
+ - Approval File: DiffOutputTests.LongWithNewlineCharacters.OriginalTest.approved.txt (length=939)
+ - Received File: DiffOutputTests.LongWithNewlineCharacters.OriginalTest.received.txt (length=958)
+
+Approved: imperdiet enim et justo iaculis cursus.\nAenean dictum urna sed egestas ultrices.
+Received: imperdiet enim et justo iaculis cursus.\n---PROBLEM HERE---\nAenean dictum urna se
+---------------------------------------------------^
