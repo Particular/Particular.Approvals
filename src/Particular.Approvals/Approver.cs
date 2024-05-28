@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Text.Encodings.Web;
@@ -50,7 +51,9 @@
 
             var approvedFile = Path.Combine(approvalFilesPath, $"{fileName}.{callerMemberName}.{scenarioName}approved.txt");
 
-            if (!File.Exists(approvedFile))
+            var approvedExists = File.Exists(approvedFile);
+
+            if (!approvedExists)
             {
                 File.WriteAllText(approvedFile, string.Empty);
             }
@@ -62,10 +65,31 @@
 
             if (!string.Equals(normalizedApprovedText, normalizedReceivedText))
             {
-                throw new Exception("Approval verification failed.");
+                if (!approvedExists)
+                {
+                    DetectCaseMismatches(approvedFile);
+                }
+
+                throw new Exception($"Approval verification failed.");
             }
 
             File.Delete(receivedFile);
+        }
+
+        static void DetectCaseMismatches(string approvedFile)
+        {
+            var directory = new DirectoryInfo(Path.GetDirectoryName(approvedFile));
+            if (directory.Exists)
+            {
+                var approvedFileName = Path.GetFileName(approvedFile);
+                var matchFileByCase = directory.GetFiles()
+                    .FirstOrDefault(file => file.Name.Equals(approvedFileName, StringComparison.OrdinalIgnoreCase) && !file.Name.Equals(approvedFileName, StringComparison.Ordinal));
+
+                if (matchFileByCase != null)
+                {
+                    throw new Exception("Approval verification failed because the *.approved.txt file was not found, but another file in the directory is a case-insensitive match. If this error is occurring on a case-sensitive system (Linux) then ensure the casing of the test class file, approval file, and test class name, and test method name all match.");
+                }
+            }
         }
 
         /// <summary>
