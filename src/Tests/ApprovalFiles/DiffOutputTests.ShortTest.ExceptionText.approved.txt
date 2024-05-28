@@ -1,0 +1,7 @@
+Approval verification failed.
+ - Approval File: DiffOutputTests.ShortTest.OriginalTest.approved.txt (length=46)
+ - Received File: DiffOutputTests.ShortTest.OriginalTest.received.txt (length=45)
+
+Approved: I am the very model of a modern major general.
+Received: I am the very NOPE of a modern major general.
+------------------------^
