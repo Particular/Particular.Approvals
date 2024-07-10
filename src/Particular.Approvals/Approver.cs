@@ -130,7 +130,7 @@
                 var snippetDiffPoint = Enumerable.Range(0, shortestSnippetLength).FirstOrDefault(i => approvedSnippet[i] != receivedSnippet[i]);
 
                 b.Append(new string('-', snippetDiffPoint + approvedStub.Length));
-                b.Append("^");
+                b.Append('^');
             }
 
             throw new Exception(b.ToString());
@@ -140,10 +140,10 @@
         {
             if (end >= source.Length)
             {
-                return source.Substring(start);
+                return source[start..];
             }
 
-            return source.Substring(start, end - start);
+            return source[start..end];
         }
 
         static string DisplaySpecialChars(string source) => source.Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t");
