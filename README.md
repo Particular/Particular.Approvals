@@ -4,7 +4,7 @@ This repo contains our standardized way of using approval tests to verify and hi
 
 ## Deployment
 
-Tagged versions are automatically pushed to [feedz.io](https://feedz.io/org/particular-software/repository/packages/packages/Particular.Analyzers). After validating new versions, the package should be promoted to production by pushing the package to NuGet using the feedz.io push upstream feature.
+Tagged versions are automatically pushed to [feedz.io](https://feedz.io/org/particular-software/repository/packages/packages/Particular.Approvals).
 
 ## Migration to Particular.Approvals
 
