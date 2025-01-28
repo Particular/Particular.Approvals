@@ -1,0 +1,7 @@
+Approval verification failed.
+ - Approval File: DiffOutputTests.LongWithProblemAtTheEnd.OriginalTest.approved.txt (length=938)
+ - Received File: DiffOutputTests.LongWithProblemAtTheEnd.OriginalTest.received.txt (length=958)
+
+Approved: Lorem ipsum dolor sit amet.\nConsectetur 
+Received: Lorem ipsum dolor sit amet.\nConsectetur 
+----------^
