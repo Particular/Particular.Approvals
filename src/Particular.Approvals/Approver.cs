@@ -113,7 +113,7 @@
             {
                 const int contextSize = 40;
                 var shortestLength = Math.Min(approvedText.Length, receivedText.Length);
-                var diffPoint = Enumerable.Range(0, shortestLength).FirstOrDefault(i => approvedText[i] != receivedText[i]);
+                var diffPoint = Enumerable.Range(0, shortestLength).FirstOrDefault(i => approvedText[i] != receivedText[i], shortestLength + 1);
                 var start = Math.Max(diffPoint - contextSize, 0);
                 var end = diffPoint + contextSize;
 
@@ -127,7 +127,7 @@
                 b.AppendLine(receivedStub + receivedSnippet);
 
                 var shortestSnippetLength = Math.Min(receivedSnippet.Length, approvedSnippet.Length);
-                var snippetDiffPoint = Enumerable.Range(0, shortestSnippetLength).FirstOrDefault(i => approvedSnippet[i] != receivedSnippet[i]);
+                var snippetDiffPoint = Enumerable.Range(0, shortestSnippetLength).FirstOrDefault(i => approvedSnippet[i] != receivedSnippet[i], shortestSnippetLength + 1);
 
                 b.Append(new string('-', snippetDiffPoint + approvedStub.Length));
                 b.Append('^');
