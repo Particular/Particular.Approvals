@@ -1,0 +1,4 @@
+ignore:
+  # System.Text.Json already on v8 for branch supporting net6.0
+  - test: ComponentShouldTargetDotNetLtsVersion
+    path: src/Particular.Approvals/Particular.Approvals.csproj
