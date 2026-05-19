@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Custom.Build.props" />
+  </Folder>
+  <Project Path="Particular.Approvals/Particular.Approvals.csproj" />
+  <Project Path="Tests/Tests.csproj" />
+</Solution>
